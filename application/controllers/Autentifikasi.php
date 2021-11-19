@@ -59,7 +59,7 @@ private function _login()
             redirect('autentifikasi');
         }
     }
-    public function blok() 
+public function blok() 
     { 
         $this->load->view('autentifikasi/blok'); 
     } 
@@ -103,6 +103,6 @@ private function _login()
             ];
             $this->ModelUser->simpanData($data);
             $this->session->set_flashdata('pesan', '<div class="alert alert-success alert-message" role="alert">Selamat!! akun member anda sudah dibuat. Silahkan Aktivasi Akun anda</div>'); redirect('autentifikasi'); 
-        } 
+        }
     }
 }
