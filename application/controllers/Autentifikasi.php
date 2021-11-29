@@ -20,10 +20,10 @@ class Autentifikasi extends CI_Controller
             $this->load->view('autentifikasi/login');
             $this->load->view('templates/aute_footer');
         } else {
-            $this->_login();
+            $this-> login();
         }
     } 
-private function _login()
+private function login()
 {
     $email = htmlspecialchars($this->input->post('email', true));
     $password = $this->input->post('password', true);
