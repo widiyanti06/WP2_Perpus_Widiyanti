@@ -7,11 +7,14 @@ class Autentifikasi extends CI_Controller
         if($this->session->userdata('email')){
             redirect('user');
         }
+
         $this->form_validation->set_rules('email', 'Alamat Email', 'required|trim|valid_email', [
             'required' => 'Email Harus diisi!!',
-            'valid_email' => 'Email Tidak Benar!!' ]);
+            'valid_email' => 'Email Tidak Benar' 
+        ]);
         $this->form_validation->set_rules('password', 'Password', 'required|trim', [
-            'required' => 'Password Harus diisi' ]);
+            'required' => 'Password Harus diisi' 
+        ]);
         if ($this->form_validation->run() == false) {
             $data['judul'] = 'Login';
             $data['user'] = '';
@@ -20,10 +23,10 @@ class Autentifikasi extends CI_Controller
             $this->load->view('autentifikasi/login');
             $this->load->view('templates/aute_footer');
         } else {
-            $this-> login();
+            $this->_login();
         }
     } 
-private function login()
+private function _login()
 {
     $email = htmlspecialchars($this->input->post('email', true));
     $password = $this->input->post('password', true);
