@@ -2,36 +2,12 @@
 
 class Buku extends CI_Controller
 {
-    public function kategori() { 
-        $data['judul'] = 'Kategori Buku'; 
-        $data['user'] = $this->ModelUser->cekData(['email' => $this->session->userdata('email')])->row_array(); 
-        $data['kategori'] = $this->ModelBuku->getKategori()->result_array(); 
-        
-        $this->form_validation->set_rules('kategori', 'Kategori', 'required', [ 
-            'required' => 'Judul Buku harus diisi' 
-        ]); 
-        
-        if ($this->form_validation->run() == false) { 
-            $this->load->view('templates/header', $data); 
-            $this->load->view('templates/sidebar', $data); 
-            $this->load->view('templates/topbar', $data); 
-            $this->load->view('buku/kategori', $data); 
-            $this->load->view('templates/footer'); 
-        } else { 
-            $data = [
-                'kategori' => $this->input->post('kategori')
-            ]; 
-            
-            $this->ModelBuku->simpanKategori($data); 
-            redirect('buku/kategori');
-        }
+    public function __construct() 
+    { 
+        parent::__construct();
+        cek_login();
     }
 
-    public function hapusKategori() { 
-        $where = ['id' => $this->uri->segment(3)]; 
-        $this->ModelBuku->hapusKategori($where); 
-        redirect('buku/kategori'); 
-    }
     public function index() { 
         $data['judul'] = 'Data Buku'; 
         $data['user'] = $this->ModelUser->cekData(['email' => $this->session->userdata('email')])->row_array(); 
@@ -183,5 +159,72 @@ class Buku extends CI_Controller
             $this->ModelBuku->updateBuku($data, ['id' => $this->input->post('id')]); 
             redirect('buku'); 
         } 
+    }
+
+    public function hapusBuku() { 
+        $where = ['id_kategori' => $this->uri->segment(3)]; 
+        $this->ModelBuku->hapusBuku($where); 
+        redirect('buku'); 
+    }
+
+    public function kategori() { 
+        $data['judul'] = 'Kategori Buku'; 
+        $data['user'] = $this->ModelUser->cekData(['email' => $this->session->userdata('email')])->row_array(); 
+        $data['nama_kategori'] = $this->ModelBuku->getKategori()->result_array(); 
+        
+        $this->form_validation->set_rules('nama_kategori','Nama Kategori','required', [
+                'required' => 'Kategori Harus diisi'
+        ]);
+
+        if ($this->form_validation->run() == false) { 
+            $this->load->view('templates/header', $data); 
+            $this->load->view('templates/sidebar', $data); 
+            $this->load->view('templates/topbar', $data); 
+            $this->load->view('buku/kategori', $data); 
+            $this->load->view('templates/footer'); 
+        } else { 
+            $data = [
+                'nama_kategori' => $this->input->post('nama_kategori', true)
+            ]; 
+            
+            $this->ModelBuku->simpanKategori($data); 
+            redirect('buku/kategori');
+        }
+    }
+
+    public function ubahKategori()
+    {
+        $data['judul'] = 'Ubah Kategori Buku';
+        $data['user'] = $this->ModelUser->cekData(['email' => $this->session->userdata('email')])->row_array();
+
+        $where = ['id_kategori' => $this->uri->segment(3)];
+        $data['kategori'] = $this->ModelBuku->kategoriWhere($where)->row_array();
+
+        $this->form_validation->set_rules(
+            'kategori',
+            'Kategori',
+            'required', [
+                'required' => 'Judul Buku Harus diisi'
+        ]);
+        
+        if ($this->form_validation->run() == false) 
+        {
+            $this->load->view('templates/header', $data); 
+            $this->load->view('templates/sidebar', $data); 
+            $this->load->view('templates/topbar', $data); 
+            $this->load->view('buku/ubah_kategori', $data); 
+            $this->load->view('templates/footer'); 
+        } else { 
+            
+            $data = ['kategori' =>$this->input->post('kategori')];
+            $this->ModulBuku->updateKategori(['id_kategori' => $this->input->post('id_kategori')], $data);
+            redirect('buku/kategori');
+        }       
+    }
+
+    public function hapusKategori() { 
+        $where = ['id_kategori' => $this->uri->segment(3)]; 
+        $this->ModelBuku->hapusKategori($where); 
+        redirect('buku/kategori'); 
     }
 }

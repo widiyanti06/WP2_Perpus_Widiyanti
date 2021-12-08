@@ -18,16 +18,16 @@ class User extends CI_Controller
         $this->load->view('user/index', $data); 
         $this->load->view('templates/footer');
     }
-    public function anggota()
-    {
+    public function anggota() { 
         $data['judul'] = 'Data Anggota'; 
-        $data['user'] = $this->ModelUser->cekData(['email' => $this->session->userdata('email')])->row_array(); $this->db->where('role_id', 1); 
+        $data['user'] = $this->ModelUser->cekData(['email' => $this->session->userdata('email')])->row_array(); $this->db->where('role_id', 2); 
         $data['anggota'] = $this->db->get('user')->result_array(); 
+        
         $this->load->view('templates/header', $data); 
-        $this->load->view('templates/sidebar', $data);
+        $this->load->view('templates/sidebar', $data); 
         $this->load->view('templates/topbar', $data); 
         $this->load->view('user/anggota', $data); 
-        $this->load->view('templates/footer');
+        $this->load->view('templates/footer'); 
     }
     public function ubahProfil() 
     { 
@@ -68,7 +68,8 @@ class User extends CI_Controller
             }
             $this->db->set('nama', $nama); 
             $this->db->where('email', $email); 
-            $this->db->update('user'); 
+            $this->db->update('user');
+
             $this->session->set_flashdata('pesan', '<div class="alert alert-success alert-message" role="alert">Profil Berhasil diubah </div>');
             redirect('user');
         }
