@@ -162,7 +162,7 @@ class Buku extends CI_Controller
     }
 
     public function hapusBuku() { 
-        $where = ['id_kategori' => $this->uri->segment(3)]; 
+        $where = ['id' => $this->uri->segment(3)]; 
         $this->ModelBuku->hapusBuku($where); 
         redirect('buku'); 
     }
@@ -192,39 +192,31 @@ class Buku extends CI_Controller
         }
     }
 
-    public function ubahKategori()
-    {
-        $data['judul'] = 'Ubah Kategori Buku';
-        $data['user'] = $this->ModelUser->cekData(['email' => $this->session->userdata('email')])->row_array();
-
-        $where = ['id_kategori' => $this->uri->segment(3)];
-        $data['kategori'] = $this->ModelBuku->kategoriWhere($where)->row_array();
-
-        $this->form_validation->set_rules(
-            'kategori',
-            'Kategori',
-            'required', [
-                'required' => 'Judul Buku Harus diisi'
-        ]);
+    public function ubahKategori($id_kategori)
+    { 
+        $data['judul'] = 'Ubah Kategori'; 
+        $data['user'] = $this->ModelUser->cekData(['email' => $this->session->userdata('email')])->row_array(); 
+        $data['kategori'] = $this->ModelBuku->ubah_data($id_kategori);
         
-        if ($this->form_validation->run() == false) 
-        {
-            $this->load->view('templates/header', $data); 
-            $this->load->view('templates/sidebar', $data); 
-            $this->load->view('templates/topbar', $data); 
-            $this->load->view('buku/ubah_kategori', $data); 
-            $this->load->view('templates/footer'); 
-        } else { 
-            
-            $data = ['kategori' =>$this->input->post('kategori')];
-            $this->ModulBuku->updateKategori(['id_kategori' => $this->input->post('id_kategori')], $data);
-            redirect('buku/kategori');
-        }       
+        $this->load->view('templates/header', $data); 
+        $this->load->view('templates/sidebar', $data); 
+        $this->load->view('templates/topbar', $data); 
+        $this->load->view('buku/ubah_kategori', $data); 
+        $this->load->view('templates/footer');
+    }
+
+    public function proses_ubah_data()
+    {
+        $this->ModelBuku->proses_ubah_data($id_kategori);
+        $this->session->set_flashdata('pesan', '<div class="alert alert-success" role="alert">Berhasil Mengedit Kategori</div>');
+        redirect('buku/kategori');
     }
 
     public function hapusKategori() { 
         $where = ['id_kategori' => $this->uri->segment(3)]; 
-        $this->ModelBuku->hapusKategori($where); 
+        $this->ModelBuku->hapusKategori($where);
+        $this->session->set_flashdata('pesan', '<div class="alert alert-success" role="alert">Berhasil Menghapus Kategori</div>');  
         redirect('buku/kategori'); 
     }
+
 }

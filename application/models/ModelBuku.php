@@ -31,6 +31,7 @@ class ModelBuku extends CI_Model
         $this->db->from('buku');
         return $this->db->get()->row($field);
     }
+
     public function getKategori()
     {
         return $this->db->get('kategori');
@@ -58,6 +59,21 @@ class ModelBuku extends CI_Model
         $this->db->join('kategori','kategori.id_kategori=buku.id_kategori');
         $this->db->where($where);
         return $this->db->get();
+    }
+
+    public function ubah_data($id_kategori)
+    {
+        return $this->db->get_where('kategori', ['id_kategori' => $id_kategori])->row_array();
+    }
+
+    public function proses_ubah_data()
+    {
+        $data = [
+            'nama_kategori' =>$this->input->post('nama_kategori'),
+        ];
+
+        $this->db->where('id_kategori', $this->input->post('id_kategori'));
+        $this->db->update('kategori', $data);
     }
 }
 ?>

@@ -20,14 +20,14 @@
                 </thead>
                 <tbody>
                     <?php
-                    $a = 1;
-                    foreach ($nama_kategori as $k) { ?>
+                        $a = 1;
+                        foreach ($nama_kategori as $k) { ?>
                     <tr>
                         <th scope="row"><?= $a++; ?></th>
                         <th><?= $k['nama_kategori']; ?></th>
                         <td>
                             <a href="<?= base_url('buku/ubahKategori/').$k['id_kategori'];?>" class="badge badge-info"><i class="fas fa-edit"></i> Ubah</a> 
-                            <a href="<?= base_url('buku/hapusKategori/').$k['id_kategori'];?>" onclick="return confirm('Kamu yakin akan menghapus <?= $judul.' '.$k['nama_kategori'];?> ?');" class="badge badge-danger"><i class="fas fa-trash"></i> Hapus</a>
+                            <a href="<?= base_url('buku/hapusKategori/').$k['id_kategori'];?>" onclick="return confirm('Kamu yakin akan menghapus <?= $judul.' '.$k['nama_kategori'];?>')" class="badge badge-danger"><i class="fas fa-trash"></i> Hapus</a>
                         </td>
                     </tr>
                     <?php } ?>
@@ -50,7 +50,8 @@
             <form action="<?= base_url('buku/kategori'); ?>" method="post"> 
                 <div class="modal-body"> 
                     <div class="form-group">
-                        <input type="text" class="form-control form-control-user" id="kategori" value="<?= set_value('nama_kategori'); ?>" name="nama_kategori">Masukkan Kategori</input>
+                        <label>Nama Kategori</label>
+                        <input type="text" class="form-control form-control-user" id="kategori" value="<?= set_value('nama_kategori'); ?>" name="nama_kategori"></input>
                         <?= form_error('kategori','<small class="text-danger pl-3">', '</small>'); ?> 
                     </div>
                 </div>
