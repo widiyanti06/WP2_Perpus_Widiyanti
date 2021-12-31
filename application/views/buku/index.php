@@ -1,7 +1,7 @@
 <!-- Begin Page Content --> 
 <div class="container-fluid"> 
     <?= $this->session->flashdata('pesan'); ?> 
-    <div class="row"> <div class="col-lg-12"> 
+    <div class="row"><div class="col-lg-12"> 
         <?php if(validation_errors()){?> 
             <div class="alert alert-danger" role="alert"> 
                 <?= validation_errors();?> 
@@ -31,7 +31,7 @@
                     foreach ($buku as $b) { ?> 
                 <tr> 
                     <th scope="row"><?= $a++; ?></th> 
-                    <td><?= $b['judul_buku']; ?></td> 
+                    <td><?= $b['judul_buku']; ?></td>
                     <td><?= $b['pengarang']; ?></td> 
                     <td><?= $b['penerbit']; ?></td> 
                     <td><?= $b['tahun_terbit']; ?></td> 
@@ -46,7 +46,7 @@
                         </picture>
                     </td> 
                     <td> 
-                        <a href="" class="badge badge-primary" data-toggle="modal" data-target="#ubahBaruModal"><i class="fas fa-edit"></i> Ubah</a>
+                        <a href="<?= base_url('buku/ubahBuku/').$b['id'];?>" class="badge badge-primary"><i class="fas fa-edit"></i> Ubah</a>
                         <a href="<?= base_url('buku/hapusbuku/').$b['id'];?>" onclick="return confirm('Kamu yakin akan menghapus <?= $judul.' '.$b['judul_buku'];?> ?');" class="badge badge-danger"><i class="fas fa-trash"></i> Hapus</a> 
                     </td> 
                 </tr> 
@@ -58,7 +58,6 @@
 
 </div> 
 <!-- /.container-fluid --> 
-</div> <!-- End of Main Content --> 
 <!-- Modal Tambah buku baru--> 
 <div class="modal fade" id="bukuBaruModal" tabindex="-1" role="dialog" aria-labelledby="bukuBaruModalLabel" aria-hidden="true"> 
     <div class="modal-dialog" role="document"> 
@@ -75,13 +74,13 @@
                         <input type="text" class="form-control form-control-user" id="judul_buku" name="judul_buku" placeholder="Masukkan Judul Buku"> 
                     </div> 
                     <div class="form-group"> 
-                        <select name="id_kategori" class="form-control form-control-user"> 
+                        <select name="id_kategori" class="form-control form-control-user">
                             <option value="">Pilih Kategori</option> 
-                            <?php 
-                            foreach ($kategori as $k) { ?> 
-                                <option value="<?= $k['id_kategori'];?>"><?= $k['nama_kategori'];?></option> 
+                            <?php $k = ['Sains','Hobby','Komputer','Komunikasi','Hukum','Agama','Populer','Bahasa','Komik']; 
+                                for ($i=0;$i<9;$i++) { ?> 
+                                <option value="<?= $k[$i];?>"><?= $k[$i];?></option> 
                             <?php } ?> 
-                        </select> 
+                        </select>
                     </div> 
                     <div class="form-group">
                         <input type="text" class="form-control form-control-user" id="pengarang" name="pengarang" placeholder="Masukkan nama pengarang"> 
@@ -91,7 +90,7 @@
                     </div> 
                     <div class="form-group"> 
                         <select name="tahun" class="form-control form-control-user"> 
-                            <option value="">Pilih Tahun</option> 
+                            <option value="">Pilih Tahun</option>
                             <?php 
                             for ($i=date('Y'); $i > 1000 ; $i--) { ?> 
                                 <option value="<?= $i;?>"><?= $i;?></option> 
@@ -113,9 +112,10 @@
                     <button type="submit" class="btn btn-primary"><i class="fas fa-plus-circle"></i> Tambah</button> 
                 </div> 
             </form>
-        </div>
-    </div>
+        </div> 
+    </div> 
 </div>
+
 <!-- End of Modal Tambah Menu -->
 <!-- Modal Edit buku--> 
 <div class="modal fade" id="ubahBaruModal" tabindex="-1" role="dialog" aria-labelledby="ubahBaruModalLabel" aria-hidden="true"> 
@@ -127,25 +127,26 @@
                     <span aria-hidden="true">&times;</span> 
                 </button> 
             </div> 
-            <form action="<?= base_url('buku/index'); ?>" method="post" enctype="multipart/form-data">
+            <form action="<?= base_url('buku/ubahBuku'); ?>" method="post" enctype="multipart/form-data">
                 <div class="modal-body">
+                    <input type="hidden" class="form-control" name="id" value="<?= $b['id']; ?>">
                     <div class="form-group"> 
-                        <input type="text" class="form-control form-control-user" id="judul_buku" name="judul_buku" placeholder="Masukkan Judul Buku"> 
+                        <input type="text" class="form-control form-control-user" id="judul_buku" name="judul_buku" value="<?= $b['judul_buku'];?>" placeholder="Masukkan Judul Buku"> 
                     </div> 
                     <div class="form-group"> 
-                        <select name="id_kategori" class="form-control form-control-user"> 
+                        <select name="kategori" class="form-control form-control-user"> 
                             <option value="">Pilih Kategori</option> 
-                            <?php 
-                            foreach ($kategori as $k) { ?> 
-                                <option value="<?= $k['id_kategori'];?>"><?= $k['nama_kategori'];?></option> 
+                            <?php $k = ['Sains','Hobby','Komputer','Komunikasi','Hukum','Agama','Populer','Bahasa','Komik']; 
+                                for ($i=0;$i<9;$i++) { ?> 
+                                <option value="<?= $k[$i];?>"><?= $k[$i];?></option> 
                             <?php } ?> 
-                        </select> 
+                        </select>
                     </div> 
                     <div class="form-group">
-                        <input type="text" class="form-control form-control-user" id="pengarang" name="pengarang" value="<?= $buku['pengarang'];?>" placeholder="Masukkan nama pengarang"> 
+                        <input type="text" class="form-control form-control-user" id="pengarang" name="pengarang" value="<?= $b['pengarang'];?>" placeholder="Masukkan nama pengarang"> 
                     </div> 
                     <div class="form-group"> 
-                        <input type="text" class="form-control form-control-user" id="penerbit" name="penerbit" value="<?= $buku['penerbit'];?>" placeholder="Masukkan nama penerbit"> 
+                        <input type="text" class="form-control form-control-user" id="penerbit" name="penerbit" value="<?= $b['penerbit'];?>" placeholder="Masukkan nama penerbit"> 
                     </div> 
                     <div class="form-group"> 
                         <select name="tahun" class="form-control form-control-user"> 
@@ -157,13 +158,13 @@
                         </select> 
                     </div> 
                     <div class="form-group"> 
-                        <input type="text" class="form-control form-control-user" id="isbn" name="isbn" value="<?= $buku['isbn'];?>" placeholder="Masukkan ISBN"> 
+                        <input type="text" class="form-control form-control-user" id="isbn" name="isbn" value="<?= $b['isbn'];?>" placeholder="Masukkan ISBN"> 
                     </div> 
                     <div class="form-group"> 
-                        <input type="text" class="form-control form-control-user" id="stok" name="stok" value="<?= $buku['stok'];?>" placeholder="Masukkan nominal stok"> 
+                        <input type="text" class="form-control form-control-user" id="stok" name="stok" value="<?= $b['stok'];?>" placeholder="Masukkan nominal stok"> 
                     </div> 
                     <div class="form-group"> 
-                        <input type="file" class="form-control form-control-user" id="image" name="image"> 
+                        <input type="file" class="form-control form-control-user" id="image" name="image" value="<?= $b['image'];?>"> 
                     </div>
                     <div class="modal-footer"> 
                         <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-ban"></i> Close</button> 

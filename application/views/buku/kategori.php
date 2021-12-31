@@ -21,7 +21,7 @@
                 <tbody>
                     <?php
                         $a = 1;
-                        foreach ($nama_kategori as $k) { ?>
+                        foreach ($kategori as $k) { ?>
                     <tr>
                         <th scope="row"><?= $a++; ?></th>
                         <th><?= $k['nama_kategori']; ?></th>
